@@ -7,8 +7,9 @@ if [ $? -eq 0 ]
 then
 	# Running in Desktop Mode, will continue past this 'if then'
 else
-  echo -e "We're sorry but it appears that this is not being ran in Desktop mode, from personal experience, I will recommend doing further reading into what you want to be doing in order to prevent inoperablity to and data loss on your system. Goodbye!"
+  echo -e "We're sorry but it appears that this is not being ran in Desktop mode, from personal experience, I will recommend doing further reading into what you want to be doing in order to prevent inoperablity to and data loss on your system. Have a nice day!"
 	# insert script self removal call here
+	exit
 fi
 
 # Checking what version of SteamOS/SteamFork is running, 3.6.x or 3.7.x
@@ -18,8 +19,10 @@ if [ $? -ne 0 ]
 then
 	# SteamOS?SteamFork 3.6.x or 3.7.x found, will continue past this 'if then'
 else
-	echo -e "We're sorry but it appears that your system is running an outdated version of SteamOS/SteamFork ( $steamos_version ), from personal experience, I will recommend doing further reading into what you want to be doing in order to prevent inoperablity to and data loss on your system. Goodbye!"
+	echo "We're sorry but it appears that your system is running an outdated version of SteamOS/SteamFork ( $steamos_version ), from personal experience, I will recommend doing further reading into what you want to be doing in order to prevent inoperablity to and data loss on your system. Have a nice day! (This will only work on SteamOS/SteamFork. Are you trying to run this on Arch? Get out here, go on, get, you're silly)"
+	zenity --error --text="We're sorry but it appears that your system is running an outdated version of SteamOS/SteamFork ( $steamos_version ), from personal experience, I will recommend doing further reading into what you want to be doing in order to prevent inoperablity to and data loss on your system. Have a nice day! (This will only work on SteamOS/SteamFork. Are you trying to run this on Arch? Get out here, go on, get, you're silly)"
 	# insert script self removal call here
+	exit
 fi
 
 # Checking the current 'whoami' 'passwd' is set against 'sudo'
@@ -33,12 +36,15 @@ then
 	then
 		echo Sudo password is good!
 	else
-		echo Sudo password is wrong! Re-run the script and make sure to enter the correct sudo password!
+		zenity --error --text="We're sorry but it appears that the password you've entered is incorrect, from personal experience, I will recommend doing further reading into what you want to be doing in order to prevent inoperablity to and data loss on your system. Have a nice day!"
+		# insert script self removal call here
 		exit
 	fi
 else
 	echo Sudo password is blank! Setup a sudo password first and then re-run script!
+	zenity --error --text="We're sorry but it appears that the Administrator (sudo) password has not been set"
+	
 	passwd
 	exit
 fi
-# commands to add: passwd && sudo steamos-readonly disable && sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --populate holo && sudo pacman -S <linker>
+# commands to add: sudo steamos-readonly disable && sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --populate holo && sudo pacman -S <linker>
