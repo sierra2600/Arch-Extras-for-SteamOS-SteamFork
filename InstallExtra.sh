@@ -41,7 +41,8 @@ then
 
 	if [ $? -eq 0 ]
 	then
-		echo -e "Sudo password is good!"
+		echo -e "The provided Administorator (sudo) password is correct"
+		# Will continue past this 'if then'
 	else
 		export WrongPass="${preHandRep}the password you've entered is incorrect${handRepeat}"
 		echo -e "${WrongPass}"
@@ -59,6 +60,21 @@ else
 fi
 
 # Insert code here
+# inspect /etc/pacman.conf for broken:
+	# [steamfork]
+	# Server = file:///home/fewtarius/distribution/release/repos/3.7/os/x86_64
+	# Include = /etc/pacman.d/steamfork-mirrorlist
+
+sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+sudo pacman -S reflector
+
+
+# Temporarily add:
+	# [extra]
+	# Include = /etc/pacman.d/mirrorlist
+
+
+
 
 if [ ! $? = 0 ]; then
     echo "USER: Operation cancelled by the user."
