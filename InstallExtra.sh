@@ -6,7 +6,7 @@ clear
 
 export notReady="We're sorry but this script is not ready for use. Have a nice day!"
 echo -e "${notReady}"
-zenity --error --text="${notReady}"
+zenity --error --text="${notReady}" &>/dev/null
 exit
 
 export preHandRep="We're sorry but it appears that "
