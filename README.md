@@ -9,6 +9,4 @@ that is not SteamOSs/SteamForks already
 existing mirrors could have potential of
 someone having a bad day
 
-(This is currently geard towards
-SteamFork as I'm not sure if SteamOS
-has zenity at the moment)
+curl -fsSL https://raw.githubusercontent.com/sierra2600/Arch-Extras-for-SteamOS-SteamFork/refs/heads/main/InstallExtra.sh | sh
