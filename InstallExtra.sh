@@ -19,7 +19,21 @@ then
 else
 	echo -e "${preHandRep}this is not being ran in Desktop mode${handRepeat}"
 	# insert script self removal call here
-	exit
+	exit 1
+fi
+
+if ! command -v pacman >/dev/null 2>&1
+then
+    echo "${preHandRep}a required program was not installed suggesting that "
+	# insert script self removal call here
+    exit 1
+fi
+
+if ! command -v zenity >/dev/null 2>&1
+then
+    echo "${preHandRep}a required program was not installed suggesting that "
+	# insert script self removal call here
+    exit 1
 fi
 
 # Checking what version of SteamOS/SteamFork is running, 3.6.x or 3.7.x
@@ -53,7 +67,7 @@ then
 		echo -e "${WrongPass}"
 		zenity --error --text="${WrongPass}"
 		# insert script self removal call here
-		exit
+		exit 1
 	fi
 else
 	export AdNotSet="${preHandRep}the Administrator (sudo) password has not been set${handRepeat}"
@@ -61,7 +75,7 @@ else
 	zenity --error --text="${AdNotSet}"
 	# insert script self removal call here
 	# "passwd"
-	exit
+	exit 1
 fi
 
 # Insert code here
