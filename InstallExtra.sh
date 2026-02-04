@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set +bvx -h
+
 export notReady="We're sorry but this script is not ready for use. Have a nice day!"
 echo -e "${notReady}"
 zenity --error --text="${notReady}"
@@ -60,18 +63,23 @@ else
 fi
 
 # Insert code here
-# inspect /etc/pacman.conf for broken:
+# inspect /etc/pacman.conf for broken and comment them out (without revertion) :
 	# [steamfork]
 	# Server = file:///home/fewtarius/distribution/release/repos/3.7/os/x86_64
 	# Include = /etc/pacman.d/steamfork-mirrorlist
+grep '\[steamfork\]' /etc/pacman.conf
+
+# check saved date in: /etc/pacman.d/mirrorlist
 
 sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 sudo pacman -S reflector
+sudo reflector --protocol https --sort rate --connection-timeout 1 --download-timeout 1 --threads 1 --age 1 --delay 1 --completion-percent 100 --save /etc/pacman.d/mirrorlist
+sudo cp /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
 
-
-# Temporarily add:
-	# [extra]
-	# Include = /etc/pacman.d/mirrorlist
+# Temporary:
+	# comment out [testing]
+	# Add: [extra]
+	# remove # from #Include = /etc/pacman.d/mirrorlist
 
 
 
