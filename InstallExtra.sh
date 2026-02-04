@@ -1,6 +1,8 @@
 #!/bin/bash
 
+# 'set'ting the script to be less verbose/quiet and remember commands that were used for faster calling
 set +bvx -h
+clear
 
 export notReady="We're sorry but this script is not ready for use. Have a nice day!"
 echo -e "${notReady}"
