@@ -4,11 +4,6 @@
 set +bvx -h
 clear
 
-export notReady="We're sorry but this script is not ready for use. Have a nice day!"
-echo -e "${notReady}"
-zenity --error --text="${notReady}" &>/dev/null
-exit
-
 export preHandRep="We're sorry but it appears that "
 export handRepeat=", from personal experience, I will recommend doing further reading into what you want to be doing in order to prevent inoperablity to and data loss on your system. Have a nice day!"
 # Checking if this is being ran in Desktop Mode or ssh / virtual tty session
@@ -24,14 +19,14 @@ fi
 
 if ! command -v pacman >/dev/null 2>&1
 then
-    echo "${preHandRep}a required program was not installed suggesting that "
+    echo "${preHandRep}a required program was not installed suggesting that this is not being ran on SteamOS nor SteamFork${handRepeat}"
 	# insert script self removal call here
     exit 1
 fi
 
 if ! command -v zenity >/dev/null 2>&1
 then
-    echo "${preHandRep}a required program was not installed suggesting that "
+    echo "${preHandRep}a required program was not installed suggesting that this is not being ran on SteamOS nor SteamFork${handRepeat}"
 	# insert script self removal call here
     exit 1
 fi
@@ -49,6 +44,15 @@ else
 	# insert script self removal call here
 	exit
 fi
+
+# -------
+
+export notReady="We're sorry but this script is not ready for use. Have a nice day!"
+echo -e "${notReady}"
+zenity --error --text="${notReady}" &>/dev/null
+exit
+
+# -------
 
 # Checking the current 'whoami' 'passwd' is set against 'sudo'
 if [ "$(passwd --status $(whoami) | tr -s " " | cut -d " " -f 2)" == "P" ]
