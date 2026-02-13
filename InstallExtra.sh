@@ -6,15 +6,15 @@ clear
 
 export preHandRep="We're sorry but it appears that "
 export handRepeat=", from personal experience, I will recommend doing further reading into what you want to be doing in order to prevent inoperablity to and data loss on your system. Have a nice day!"
-# Checking if this is being ran in Desktop Mode or ssh / virtual tty session
+
+# sanity check - are you running this in Desktop Mode or ssh / virtual tty session?
 xdpyinfo &> /dev/null
 if [ $? -eq 0 ]
 then
-	# Running in Desktop Mode, will continue past this 'if then'
+	echo -e "Script is running in Desktop Mode."
 else
-	echo -e "${preHandRep}this is not being ran in Desktop mode${handRepeat}"
-	# insert script self removal call here
-	exit 1
+ 	echo -e "${preHandRep}this is not being ran in Desktop mode${handRepeat}"
+	exit
 fi
 
 if ! command -v pacman >/dev/null 2>&1
