@@ -4,52 +4,63 @@
 DEBUG=${DEBUG:-true}
 
 debug() {
-    if [ "${DEBUG}" = "true" ]; then
-        echo -e "DEBUG: $*"
-    fi
+	if [ "${DEBUG}" = "true" ]; then
+		echo -e "DEBUG: $*"
+	fi
 }
 
-# 'set'ting the script to be less verbose/quiet and remember commands that were used for faster calling
+debug "'set'ting the script to be less verbose/quiet and remember commands that were used for faster calling"
 set +bvx -h
 clear
 
-export preHandRep="We're sorry but it appears that "
-export handRepeat=", from personal experience, I will recommend doing further reading into what you want to be doing in order to prevent inoperablity to and data loss on your system. Have a nice day!"
+debug "Defining errB4 and Aftr"
+export errB4="We're sorry but it appears that "
+export errAftr=", from personal experience, I will recommend doing further reading into what you want to be doing in order to prevent inoperablity to and data loss on your system. Have a nice day!"
 
-# sanity check - are you running this in Desktop Mode or ssh / virtual tty session?
+debug "Check: Running in Desktop Mode or ssh / virtual tty session"
 xdpyinfo &> /dev/null
 if [ $? -eq 0 ]
 then
-	debug "Script is running in Desktop Mode"
+	debug "SUCCUSS! Script is running in Desktop Mode"
 else
- 	echo -e "${preHandRep}this is not being ran in Desktop mode${handRepeat}"
+	echo -e "${errB4}this is not being ran in Desktop mode${errAftr}"
 	exit
 fi
 
-if ! command -v pacman >/dev/null 2>&1
-then
-    echo "${preHandRep}a required program was not installed suggesting that this is not being ran on SteamOS nor SteamFork${handRepeat}"
-	# insert script self removal call here
-    exit 1
-fi
-
+export missProg="a required program was not installed suggesting that this is not being ran on SteamOS nor SteamFork"
+debug "Check: zenity Exist?"
 if ! command -v zenity >/dev/null 2>&1
 then
-    echo "${preHandRep}a required program was not installed suggesting that this is not being ran on SteamOS nor SteamFork${handRepeat}"
+	errMsgs "${missProg}"
 	# insert script self removal call here
-    exit 1
+	exit 1
 fi
+debug "SUCCUSS! zenity Exists\n	Break out of if, continue"
+
+errMsgs() {
+	echo -e "${errB4}$*${errAftr}"
+	zenity --error --text="${errB4}$*${errAftr}"
+}
+
+debug "Check: pacman Exist?"
+if ! command -v pacman >/dev/null 2>&1
+then
+	errMsgs "${missProg}"
+	# insert script self removal call here
+	exit 1
+fi
+debug "SUCCUSS! pacman Exists\n	Break out of if, continue"
 
 # -------
 
-export notReady="We're sorry but this script is not ready for use. Have a nice day!"
+export notReady="${errB4}this script is not ready for use. Have a nice day!"
 debug "${notReady}"
-zenity --error --text="${notReady}" &>/dev/null
+zenity --error --text="${notReady}"
 exit 1
 
 # -------
 
-# Checking the current 'whoami' 'passwd' is set against 'sudo'
+debug "Check: current 'whoami' 'passwd' is set against 'sudo'"
 if [ "$(passwd --status $(whoami) | tr -s " " | cut -d " " -f 2)" == "P" ]
 then
 	debug "Checking if the sudo password is correct"
@@ -57,20 +68,16 @@ then
 
 	if [ $? -eq 0 ]
 	then
-		debug "The provided Administorator (sudo) password is correct! Go psycho!"
-		zenity --error --text="The provided Administorator (sudo) password is correct! Go psycho!"
+		debug "SUCCUSS! The provided Administorator (sudo) password is correct! Go psycho!"
+		errMsgs "The provided Administorator (sudo) password is correct! Go psycho!"
 		# Will continue past this 'if then'
 	else
-		export WrongPass="${preHandRep}the password you've entered is incorrect${handRepeat}"
-		debug "${WrongPass}"
-		zenity --error --text="${WrongPass}"
+		errMsgs "the password you've entered is incorrect"
 		# insert script self removal call here
 		exit 1
 	fi
 else
-	export AdNotSet="${preHandRep}the Administrator (sudo) password has not been set${handRepeat}"
-	debug "${AdNotSet}"
-	zenity --error --text="${AdNotSet}"
+	errMsgs "the Administrator (sudo) password has not been set"
 	# insert script self removal call here
 	# "passwd"
 	exit 1
@@ -99,9 +106,9 @@ sudo cp /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
 
 
 if [ ! $? = 0 ]; then
-    debug "USER: Operation cancelled by the user"
+	debug "USER: Operation cancelled by the user"
 	# insert script self removal call here
-    exit 0
+	exit 0
 fi
 
 # commands to add: sudo steamos-readonly disable && sudo pacman-key --init && sudo pacman-key --populate archlinux && sudo pacman-key --populate holo && sudo pacman -S <linker>
