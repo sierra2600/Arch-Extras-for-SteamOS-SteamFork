@@ -31,40 +31,18 @@ then
     exit 1
 fi
 
-# Checking what version of SteamOS/SteamFork is running, 3.6.x or 3.7.x
-#steamos_version=$(cat /etc/os-release | grep -i version_id | cut -d "=" -f2)
-#echo $steamos_version | grep -e 3.4 -e 3.5
-#if [ $? -ne 0 ]
-#then
-	# SteamOS?SteamFork 3.6.x or 3.7.x found, will continue past this 'if then'
-#else
-#	export oldMess="${preHandRep}your system is running an outdated version of SteamOS/SteamFork ( $steamos_version )${handRepeat}"
-#	echo -e "${oldMess}"
-#	zenity --error --text="${oldMess}"
-	# insert script self removal call here
-#	exit
-#fi
-
-# -------
-
-export notReady="We're sorry but this script is not ready for use. Have a nice day!"
-echo -e "${notReady}"
-zenity --error --text="${notReady}" &>/dev/null
-exit
-
-# -------
-
 # Checking the current 'whoami' 'passwd' is set against 'sudo'
 if [ "$(passwd --status $(whoami) | tr -s " " | cut -d " " -f 2)" == "P" ]
 then
-	read -s -p "Please enter current sudo password: " current_password ; echo
+	#read -s -p "Please enter current sudo password: " current_password ; echo
 	echo -e "Checking if the sudo password is correct"
 	# echo -e "$current_password\n" | sudo -S -k ls &> /dev/null   # known working
 	zenity --password | sudo -S -k ls &> /dev/null
 
 	if [ $? -eq 0 ]
 	then
-		echo -e "The provided Administorator (sudo) password is correct"
+		echo -e "The provided Administorator (sudo) password is correct! Go psycho!"
+		zenity --error --text="The provided Administorator (sudo) password is correct! Go psycho!"
 		# Will continue past this 'if then'
 	else
 		export WrongPass="${preHandRep}the password you've entered is incorrect${handRepeat}"
@@ -81,6 +59,15 @@ else
 	# "passwd"
 	exit 1
 fi
+
+# -------
+
+export notReady="We're sorry but this script is not ready for use. Have a nice day!"
+echo -e "${notReady}"
+zenity --error --text="${notReady}" &>/dev/null
+exit 1
+
+# -------
 
 # Insert code here
 # inspect /etc/pacman.conf for broken and comment them out (without revertion) :
