@@ -32,18 +32,18 @@ then
 fi
 
 # Checking what version of SteamOS/SteamFork is running, 3.6.x or 3.7.x
-steamos_version=$(cat /etc/os-release | grep -i version_id | cut -d "=" -f2)
-echo $steamos_version | grep -e 3.4 -e 3.5
-if [ $? -ne 0 ]
-then
+#steamos_version=$(cat /etc/os-release | grep -i version_id | cut -d "=" -f2)
+#echo $steamos_version | grep -e 3.4 -e 3.5
+#if [ $? -ne 0 ]
+#then
 	# SteamOS?SteamFork 3.6.x or 3.7.x found, will continue past this 'if then'
-else
-	export oldMess="${preHandRep}your system is running an outdated version of SteamOS/SteamFork ( $steamos_version )${handRepeat}"
-	echo -e "${oldMess}"
-	zenity --error --text="${oldMess}"
+#else
+#	export oldMess="${preHandRep}your system is running an outdated version of SteamOS/SteamFork ( $steamos_version )${handRepeat}"
+#	echo -e "${oldMess}"
+#	zenity --error --text="${oldMess}"
 	# insert script self removal call here
-	exit
-fi
+#	exit
+#fi
 
 # -------
 
