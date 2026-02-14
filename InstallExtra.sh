@@ -31,6 +31,15 @@ then
     exit 1
 fi
 
+# -------
+
+export notReady="We're sorry but this script is not ready for use. Have a nice day!"
+echo -e "${notReady}"
+zenity --error --text="${notReady}" &>/dev/null
+exit 1
+
+# -------
+
 # Checking the current 'whoami' 'passwd' is set against 'sudo'
 if [ "$(passwd --status $(whoami) | tr -s " " | cut -d " " -f 2)" == "P" ]
 then
@@ -59,15 +68,6 @@ else
 	# "passwd"
 	exit 1
 fi
-
-# -------
-
-export notReady="We're sorry but this script is not ready for use. Have a nice day!"
-echo -e "${notReady}"
-zenity --error --text="${notReady}" &>/dev/null
-exit 1
-
-# -------
 
 # Insert code here
 # inspect /etc/pacman.conf for broken and comment them out (without revertion) :
