@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Enable debug output if DEBUG=true is passed in the environment
+DEBUG=${DEBUG:-true}
+
+debug() {
+    if [ "${DEBUG}" = "true" ]; then
+        echo -e "DEBUG: $*"
+    fi
+}
+
 # 'set'ting the script to be less verbose/quiet and remember commands that were used for faster calling
 set +bvx -h
 clear
@@ -11,7 +20,7 @@ export handRepeat=", from personal experience, I will recommend doing further re
 xdpyinfo &> /dev/null
 if [ $? -eq 0 ]
 then
-	echo -e "Script is running in Desktop Mode."
+	debug "Script is running in Desktop Mode"
 else
  	echo -e "${preHandRep}this is not being ran in Desktop mode${handRepeat}"
 	exit
@@ -34,7 +43,7 @@ fi
 # -------
 
 export notReady="We're sorry but this script is not ready for use. Have a nice day!"
-echo -e "${notReady}"
+debug "${notReady}"
 zenity --error --text="${notReady}" &>/dev/null
 exit 1
 
@@ -43,26 +52,24 @@ exit 1
 # Checking the current 'whoami' 'passwd' is set against 'sudo'
 if [ "$(passwd --status $(whoami) | tr -s " " | cut -d " " -f 2)" == "P" ]
 then
-	#read -s -p "Please enter current sudo password: " current_password ; echo
-	echo -e "Checking if the sudo password is correct"
-	# echo -e "$current_password\n" | sudo -S -k ls &> /dev/null   # known working
+	debug "Checking if the sudo password is correct"
 	zenity --password | sudo -S -k ls &> /dev/null
 
 	if [ $? -eq 0 ]
 	then
-		echo -e "The provided Administorator (sudo) password is correct! Go psycho!"
+		debug "The provided Administorator (sudo) password is correct! Go psycho!"
 		zenity --error --text="The provided Administorator (sudo) password is correct! Go psycho!"
 		# Will continue past this 'if then'
 	else
 		export WrongPass="${preHandRep}the password you've entered is incorrect${handRepeat}"
-		echo -e "${WrongPass}"
+		debug "${WrongPass}"
 		zenity --error --text="${WrongPass}"
 		# insert script self removal call here
 		exit 1
 	fi
 else
 	export AdNotSet="${preHandRep}the Administrator (sudo) password has not been set${handRepeat}"
-	echo -e "${AdNotSet}"
+	debug "${AdNotSet}"
 	zenity --error --text="${AdNotSet}"
 	# insert script self removal call here
 	# "passwd"
@@ -92,7 +99,7 @@ sudo cp /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
 
 
 if [ ! $? = 0 ]; then
-    echo "USER: Operation cancelled by the user."
+    debug "USER: Operation cancelled by the user"
 	# insert script self removal call here
     exit 0
 fi
