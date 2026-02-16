@@ -88,7 +88,7 @@ fi
 	# [steamfork]
 	# Server = file:///home/fewtarius/distribution/release/repos/3.7/os/x86_64
 	# Include = /etc/pacman.d/steamfork-mirrorlist
-grep '\[steamfork\]' /etc/pacman.conf
+sed -e '' -i /etc/pacman.conf
 
 # check saved date in: /etc/pacman.d/mirrorlist
 
@@ -97,11 +97,14 @@ sudo pacman -S reflector
 sudo reflector --protocol https --sort rate --connection-timeout 1 --download-timeout 1 --threads 1 --age 1 --delay 1 --completion-percent 100 --save /etc/pacman.d/mirrorlist
 sudo cp /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
 
-# Temporary:
-	# comment out [testing]
-	# Add: [extra]
-	# remove # from #Include = /etc/pacman.d/mirrorlist
+# Temporarly replace [testing] for [extra] and remove # from #Include = /etc/pacman.d/mirrorlist
+sed -e 's/#\[testing\]/\[extra\]/;/\[extra]/{N;s/\n#/\n/}' -i /etc/pacman.conf
 
+
+# Replace [extra] for [testing] and add # from #Include = /etc/pacman.d/mirrorlist
+sed -e 's/\[extra\]/#\[testing\]/;/^#\[testing\]/{n;s/^/#/}' -i /etc/pacman.conf
+
+#for precision: sed -e 's/\[extra\]/#\[testing\]/' -e '/^#\[testing\]/,/Include/s/^\s*Include/#Include/'
 
 
 
