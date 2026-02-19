@@ -93,7 +93,7 @@ sudo sed -e '/\[steamfork\]/s/^/#/;/^#\[steamfork\]/{n;s/^/#/};/^#Server/{n;s/^/
 # check saved date in: /etc/pacman.d/mirrorlist
 
 sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
-sudo pacman -S reflector
+sudo pacman -S --noconfirm reflector
 sudo reflector --protocol https --sort rate --connection-timeout 1 --download-timeout 1 --threads 1 --age 1 --delay 1 --completion-percent 100 --save /etc/pacman.d/mirrorlist
 sudo cp /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
 
