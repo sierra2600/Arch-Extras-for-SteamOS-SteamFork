@@ -94,8 +94,8 @@ sudo sed -e '/\[steamfork\]/s/^/#/;/^#\[steamfork\]/{n;s/^/#/};/^#Server/{n;s/^/
 
 sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 sudo pacman -S --noconfirm reflector
-sudo reflector --protocol https --sort rate --connection-timeout 1 --download-timeout 1 --threads 1 --age 1 --delay 1 --completion-percent 100 --save /etc/pacman.d/mirrorlist
-sudo cp /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
+echo -e "Why yes I do have countries that are at war removed from the list so that if one decides to taint the repos that you do not get screwed"
+sudo reflector --protocol https --sort rate --connection-timeout 1 --download-timeout 1 --threads 1 --age 1 --delay 1 --completion-percent 100 --exclude '\.(ru|su|ua|cn|iq|pk|kp|asia|cicku.me)(/|$)' --save /etc/pacman.d/mirrorlist
 
 # Temporarly replace [testing] for [extra] and remove # from #Include = /etc/pacman.d/mirrorlist
 sudo sed -e 's/#\[testing\]/\[extra\]/;/\[extra]/{N;s/\n#/\n/}' -i /etc/pacman.conf
@@ -111,6 +111,7 @@ sudo sed -e 's/\[extra\]/#\[testing\]/;/^#\[testing\]/{n;s/^/#/}' -i /etc/pacman
 if [ ! $? = 0 ]; then
 	debug "USER: Operation cancelled by the user"
 	# insert script self removal call here
+	sudo cp /etc/pacman.d/mirrorlist.bak /etc/pacman.d/mirrorlist
 	exit 0
 fi
 
