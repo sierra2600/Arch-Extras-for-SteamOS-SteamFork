@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Enable debug output if DEBUG=true is passed in the environment
-DEBUG=${DEBUG:-true}
+# DEBUG=${DEBUG:-true}
 
 debug() {
 	if [ "${DEBUG}" = "true" ]; then
