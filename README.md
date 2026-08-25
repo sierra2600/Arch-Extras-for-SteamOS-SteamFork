@@ -1,4 +1,4 @@
-# Arch-Extras-for-SteamOS-SteamFork
+# SteamOS-pacman-helper
 This is a specialized script for when
 you're unable to locate a package for
 your Linux SteamOS/SteamFork install,
